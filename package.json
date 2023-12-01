@@ -1,0 +1,32 @@
+{
+  "name": "sandstone-playground",
+  "version": "0.1.0",
+  "type": "module",
+  "module": "dist/main.js",
+  "contributors": [
+    {
+      "name": "Ian Senne",
+      "url": "https://github.com/IanSSenne"
+    },
+    {
+      "name": "MulverineX",
+      "url": "http://mulverine.dev"
+    }
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && tsc"
+  },
+  "devDependencies": {
+    "esbuild": "^0.19.8",
+    "esbuild-node-externals": "^1.11.0",
+    "sandstone": "^1.0.0-alpha.6",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.0",
+    "vite-plugin-node-polyfills": "^0.17.0"
+  },
+  "dependencies": {
+    "@types/node": "^20.10.1",
+    "esbuild-wasm": "^0.19.8"
+  }
+}
