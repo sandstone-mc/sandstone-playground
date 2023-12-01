@@ -1,5 +1,5 @@
 {
-  "name": "sandstone-playground",
+  "name": "@sandstone-mc/playground",
   "version": "0.1.0",
   "type": "module",
   "module": "dist/main.js",
