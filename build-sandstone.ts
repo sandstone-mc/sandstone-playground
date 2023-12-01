@@ -1,4 +1,4 @@
-import { readdirSync } from "fs";
+import { mkdirSync, readdirSync, writeFileSync } from "fs";
 import { resolve } from "path";
 import { build } from "esbuild";
 const shims = readdirSync("./web-shim");
@@ -58,6 +58,14 @@ export const sandstoneBuild = build({
     "adm-zip",
     "prismarine-nbt",
   ],
+  metafile: true,
   format: "esm",
   minify: true,
+}).then((data) => {
+  const exports = Object.values(data.metafile.outputs)[0].exports;
+  mkdirSync('./dist', { recursive: true })
+  writeFileSync(
+    "./dist/exports.js",
+    "export const exports = " + JSON.stringify(exports) + ";"
+  );
 });

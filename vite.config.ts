@@ -5,6 +5,7 @@ export default sandstoneBuild.then(() =>
   defineConfig({
     plugins: [nodePolyfills()],
     build: {
+      emptyOutDir: false,
       lib: {
         entry: "src/main.ts",
         fileName: "main",
