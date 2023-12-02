@@ -6,7 +6,7 @@ const files: Record<string, string | Buffer> = {};
 await sandstonePack.save({
   // Additional parameters
   dry: false,
-  verbose: true,
+  verbose: false,
 
   fileHandler: async (
     relativePath: string,
