@@ -1,3 +1,4 @@
+import "browser-shims";
 import { sandstonePack } from "sandstone";
 import "./index.ts";
 

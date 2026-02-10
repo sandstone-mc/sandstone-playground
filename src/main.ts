@@ -11,7 +11,13 @@ export async function compilePack(fs: Record<string, string>):Promise<{success:t
     });
     hasBeenInitialized = true;
   }
+  const browserShims = `
+globalThis.global ||= globalThis;
+globalThis.process ||= { env: {} };
+export {};
+`;
   const modules: Record<string, string> = {
+    "browser-shims": browserShims,
     sandstone: sandstoneCode,
     "node-fetch": "export default fetch",
   };

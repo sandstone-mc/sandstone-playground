@@ -17,12 +17,11 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vite build && tsc"
+    "build:sandstone": "bun run build-sandstone.ts",
+    "build": "bun run build:sandstone && vite build && tsc"
   },
   "devDependencies": {
-    "esbuild": "^0.19.8",
-    "esbuild-node-externals": "^1.11.0",
-    "sandstone": "^1.0.0-alpha.6",
+    "sandstone": "link:sandstone",
     "typescript": "^5.2.2",
     "vite": "^5.0.0",
     "vite-plugin-node-polyfills": "^0.17.0"
