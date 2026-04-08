@@ -1,9 +1,44 @@
 import { build, initialize } from "esbuild-wasm";
 import wasmUrl from "esbuild-wasm/esbuild.wasm?url";
-import sandstoneCode from "./assets/sandstone.esm.js?raw";
 import { resolve } from "path";
 import runtimeWrapperCode from "./assets/runtimeWrapper.ts?raw";
+
 let hasBeenInitialized = false;
+let sandstoneCode: string | null = null;
+let sandstoneBlobUrl: string | null = null;
+
+/** Default path to the sandstone bundle (relative to document root) */
+export const DEFAULT_SANDSTONE_PATH = "/playground/sandstone.esm.js";
+
+/** Configuration for the playground */
+export interface PlaygroundConfig {
+  /** Path or URL to the sandstone.esm.js bundle */
+  sandstonePath?: string;
+}
+
+let config: PlaygroundConfig = {};
+
+/** Configure the playground before calling compilePack */
+export function configure(options: PlaygroundConfig) {
+  config = { ...config, ...options };
+}
+
+async function loadSandstone(): Promise<string> {
+  if (sandstoneCode) return sandstoneCode;
+
+  const path = config.sandstonePath || DEFAULT_SANDSTONE_PATH;
+  const response = await fetch(path);
+  if (!response.ok) {
+    throw new Error(`Failed to load sandstone bundle from ${path}: ${response.status}`);
+  }
+  sandstoneCode = await response.text();
+  // Create a blob URL for the sandstone bundle - this URL can be used in worker imports
+  sandstoneBlobUrl = URL.createObjectURL(
+    new Blob([sandstoneCode], { type: "application/javascript" })
+  );
+  return sandstoneCode;
+}
+
 export async function compilePack(fs: Record<string, string>):Promise<{success:true,files:Record<string,string>}|{success:false,error:string}> {
   if (!hasBeenInitialized) {
     await initialize({
@@ -11,14 +46,18 @@ export async function compilePack(fs: Record<string, string>):Promise<{success:t
     });
     hasBeenInitialized = true;
   }
+
+  // Ensure sandstone is loaded and blob URL is created
+  await loadSandstone();
+
   const browserShims = `
 globalThis.global ||= globalThis;
 globalThis.process ||= { env: {} };
 export {};
 `;
+  // Only include small shims - sandstone is loaded separately as external
   const modules: Record<string, string> = {
     "browser-shims": browserShims,
-    sandstone: sandstoneCode,
     "node-fetch": "export default fetch",
   };
   const fileExtensions = ["ts", "tsx", "js", "jsx", "json"];
@@ -26,11 +65,17 @@ export {};
     entryPoints: ["<entrypoint>.ts"],
     format: "esm",
     bundle: true,
+    // Mark sandstone as external - it will be loaded separately without esbuild processing
+    external: ["sandstone"],
     plugins: [
       {
         name: "fs",
         setup(build) {
           build.onResolve({ filter: /./ }, (event) => {
+            // Mark sandstone as external - it will be loaded via blob URL
+            if (event.path === "sandstone") {
+              return { path: "sandstone", external: true };
+            }
             if (event.path in modules) {
               return { path: event.path, namespace: "module-resolution" };
             }
@@ -74,7 +119,12 @@ export {};
   });
 
   const [file] = result.outputFiles!;
-  const code = file.text;
+  let code = file.text;
+
+  // Replace the external sandstone import with the blob URL
+  // esbuild outputs: from "sandstone" or from 'sandstone'
+  code = code.replace(/from\s*["']sandstone["']/g, `from "${sandstoneBlobUrl}"`);
+
   const url = URL.createObjectURL(
     new Blob([code], { type: "application/javascript" })
   );
@@ -93,6 +143,32 @@ export {};
     let killerId = setTimeout(() => {
       if (!cleanedUp) {
         cleanedUp = true;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         worker.terminate();
         console.log("Killed worker");
         reject("Worker timed out");

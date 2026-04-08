@@ -1,6 +1,6 @@
 {
   "name": "@sandstone-mc/playground",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "type": "module",
   "repository": {
     "type": "git",
@@ -21,8 +21,7 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build:sandstone": "bun run build-sandstone.ts",
-    "build": "bun build:sandstone && vite build && tsc"
+    "build": "vite build && tsc"
   },
   "devDependencies": {
     "sandstone": "^1.0.0-beta.4",
