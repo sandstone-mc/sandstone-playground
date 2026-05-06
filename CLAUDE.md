@@ -13,7 +13,7 @@ Output: `dist/main.js` (~15MB, includes esbuild-wasm)
 
 ## Architecture
 
-The playground compiles user TypeScript code in the browser using esbuild-wasm, with sandstone loaded as an external module.
+The playground compiles user TypeScript code in the browser using esbuild-wasm, with sandstone loaded from unpkg at runtime.
 
 ### Key Files
 
@@ -27,7 +27,7 @@ The playground compiles user TypeScript code in the browser using esbuild-wasm, 
 
 1. `compilePack({ "/index.ts": userCode })` is called
 2. esbuild-wasm initializes (downloads wasm binary on first call)
-3. Sandstone bundle is fetched from `/playground/sandstone.esm.js` and cached as blob URL
+3. Sandstone bundle is fetched from `DEFAULT_SANDSTONE_PATH` and cached as blob URL
 4. esbuild compiles user code with `external: ["sandstone"]`
 5. Output has `from "sandstone"` replaced with the blob URL
 6. Compiled code runs in a Web Worker via dynamic import
@@ -38,13 +38,6 @@ The playground compiles user TypeScript code in the browser using esbuild-wasm, 
    - Calls `sandstonePack.save()` with a custom fileHandler
 8. Generated files are returned to the main thread
 
-### Why Sandstone is External
-
-The sandstone bundle (`sandstone.esm.js`) must NOT be processed by any bundler:
-- The `fix-esm-init-order` script in sandstone fixes class initialization order
-- If esbuild re-processes it, classes get reordered and break in browsers
-- V8/SpiderMonkey enforce temporal dead zone strictly (unlike JavaScriptCore/Bun)
-
 ## Configuration
 
 The playground can be configured before calling `compilePack()`:
@@ -53,29 +46,27 @@ The playground can be configured before calling `compilePack()`:
 import { compilePack, configure } from "@sandstone-mc/playground";
 
 configure({
-  sandstonePath: "/custom/path/sandstone.esm.js"
+  sandstonePath: "https://unpkg.com/sandstone@1.0.0-beta.5/dist/browser/sandstone.esm.js"
 });
 
 const result = await compilePack({ "/index.ts": code });
 ```
 
-Default sandstone path: `/playground/sandstone.esm.js`
+**Default sandstone path:** `https://unpkg.com/sandstone@beta/dist/browser/sandstone.esm.js`
 
 ## Integration with Documentation
 
 The documentation site (`sandstone-documentation`) uses this playground:
 
-1. Copy built files to `static/playground/`:
-   - `sandstone-playground/dist/main.js` → `static/playground/main.js`
-   - `sandstone/dist/browser/sandstone.esm.js` → `static/playground/sandstone.esm.js`
-
-2. Documentation loads playground dynamically:
+1. Compiler loads playground dynamically from unpkg:
    ```ts
-   const lib = await import(/* webpackIgnore: true */ "/playground/main.js");
+   const lib = await import(/* webpackIgnore: true */ "https://unpkg.com/@sandstone-mc/playground@latest/dist/main.js");
    const result = await lib.compilePack({ "/index.ts": userCode });
    ```
 
-3. The `/* webpackIgnore: true */` comment prevents Docusaurus from bundling it
+2. The `/* webpackIgnore: true */` comment prevents webpack from bundling the URL
+
+3. Monaco intellisense types are loaded separately via the `get-sandstone-files` plugin
 
 ## Runtime Environment
 
@@ -92,18 +83,6 @@ setSandstoneContext({
   },
 });
 ```
-
-## Updating After Sandstone Changes
-
-When sandstone's source changes:
-
-1. Rebuild sandstone: `cd ../sandstone && bun dev:build`
-2. Copy browser bundle: `cp ../sandstone/dist/browser/sandstone.esm.js ../sandstone-documentation/static/playground/`
-
-When playground's source changes:
-
-1. Rebuild playground: `bun run build`
-2. Copy to docs: `cp dist/main.js ../sandstone-documentation/static/playground/`
 
 ## Virtual Modules
 

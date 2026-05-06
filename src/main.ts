@@ -143,32 +143,6 @@ export {};
     let killerId = setTimeout(() => {
       if (!cleanedUp) {
         cleanedUp = true;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         worker.terminate();
         console.log("Killed worker");
         reject("Worker timed out");
