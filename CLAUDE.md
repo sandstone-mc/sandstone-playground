@@ -52,7 +52,7 @@ configure({
 const result = await compilePack({ "/index.ts": code });
 ```
 
-**Default sandstone path:** `https://unpkg.com/sandstone@beta/dist/browser/sandstone.esm.js`
+**Default sandstone path:** `https://unpkg.com/sandstone/dist/browser/sandstone.esm.js`
 
 ## Integration with Documentation
 
