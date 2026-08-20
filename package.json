@@ -1,6 +1,6 @@
 {
   "name": "@sandstone-mc/playground",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "type": "module",
   "repository": {
     "type": "git",
@@ -24,7 +24,7 @@
     "build": "vite build && tsc && bun scripts/generate-exports.ts"
   },
   "devDependencies": {
-    "sandstone": "^1.2.16",
+    "sandstone": "^1.2.23",
     "typescript": "^5.2.2",
     "vite": "^5.0.0",
     "vite-plugin-node-polyfills": "^0.17.0"

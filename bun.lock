@@ -9,7 +9,7 @@
         "esbuild-wasm": "^0.19.8",
       },
       "devDependencies": {
-        "sandstone": "^1.2.16",
+        "sandstone": "^1.2.23",
         "typescript": "^5.2.2",
         "vite": "^5.0.0",
         "vite-plugin-node-polyfills": "^0.17.0",
@@ -401,7 +401,7 @@
 
     "safe-regex-test": ["safe-regex-test@1.1.0", "", { "dependencies": { "call-bound": "^1.0.2", "es-errors": "^1.3.0", "is-regex": "^1.2.1" } }, "sha512-x/+Cz4YrimQxQccJf5mKEbIa1NzeCRNI5Ecl/ekmlYaampdNLPalVyIcCZNNH3MvmqBugV5TMYZXv0ljslUlaw=="],
 
-    "sandstone": ["sandstone@1.2.16", "", { "dependencies": { "@types/bun": "^1.3.14", "@types/nearley": "^2.11.5", "adm-zip": "^0.6.0", "binary-extensions": "^3.1.0", "fs-extra": "^11.3.6", "isbinaryfile": "^6.0.0", "lodash": "^4.18.1", "nearley": "^2.20.1", "prismarine-nbt": "^2.8.0" } }, "sha512-g16EoGzx/iIdYd9aC6hJUpuJp4Pgm2Anl8th2TU5Gu+JQo15R5wnkNbsa2LFlXSxCEo1PbhACYE3MeYHocI0Yg=="],
+    "sandstone": ["sandstone@1.2.23", "", { "dependencies": { "@types/bun": "^1.3.14", "@types/nearley": "^2.11.5", "adm-zip": "^0.6.0", "binary-extensions": "^3.1.0", "fs-extra": "^11.3.6", "isbinaryfile": "^6.0.0", "lodash": "^4.18.1", "nearley": "^2.20.1", "prismarine-nbt": "^2.8.0" } }, "sha512-Aoqri9f137Sppmzmx202thMHlkw33N6C465sE3svvjDz4zbmgNG3odfx3P/UsVJEiCEJ+2rcR/iQ13lyBCN6Ow=="],
 
     "set-function-length": ["set-function-length@1.2.2", "", { "dependencies": { "define-data-property": "^1.1.4", "es-errors": "^1.3.0", "function-bind": "^1.1.2", "get-intrinsic": "^1.2.4", "gopd": "^1.0.1", "has-property-descriptors": "^1.0.2" } }, "sha512-pgRc4hJ4/sNjWCSS9AmnS40x3bNMDTknHgL5UaMBTMyJnU90EgWh1Rz+MC9eFu4BuN/UwZjKQuY/1v3rM7HMfg=="],
 
