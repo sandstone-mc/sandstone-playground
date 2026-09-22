@@ -18,7 +18,7 @@ setSandstoneContext({
   },
 });
 
-// Reset pack state (matches CLI behavior) - this sets _smithed to undefined
+// Reset pack state (matches CLI behavior)
 resetSandstonePack();
 
 // Dynamic import so context is set first (static imports are hoisted)
